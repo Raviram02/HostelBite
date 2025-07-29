@@ -24,14 +24,16 @@ function App() {
   const { showUserLogin, isSeller } = useAppContext();
 
   return (
-    <div className="text-default min-h-screen text-gray-700 bg-white">
-      {isSellerPath ? null : <Navbar />}
-      {showUserLogin ? <Login /> : null}
-
+    <div className="min-h-screen flex flex-col text-default text-gray-700 bg-white">
+      {!isSellerPath && <Navbar />}
+      {showUserLogin && <Login />}
       <Toaster />
 
+      {/* Main content should grow to push footer down */}
       <div
-        className={`${isSellerPath ? "" : "px-6 md:px-16 lg:px-24 xl:px-32"}`}
+        className={`flex-grow ${
+          isSellerPath ? "" : "px-6 md:px-16 lg:px-24 xl:px-32"
+        }`}
       >
         <Routes>
           <Route path="/" element={<Home />} />
@@ -52,6 +54,7 @@ function App() {
           </Route>
         </Routes>
       </div>
+
       {!isSellerPath && <Footer />}
     </div>
   );
