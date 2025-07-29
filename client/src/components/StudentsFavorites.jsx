@@ -6,7 +6,7 @@ function StudentsFavorites() {
   const { products } = useAppContext();
 
   return (
-    <div className="mt-16">
+    <div className="mt-14">
       <p className="text-2xl md:text-3xl font-medium">Students’ Favourite</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 lg:grid-cols-5 mt-6">
         {products

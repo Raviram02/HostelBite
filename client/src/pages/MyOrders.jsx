@@ -40,18 +40,27 @@ function MyOrders() {
             <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
 
             {/* Show status once here */}
-            <p className="text-gray-400 font-medium mt-2">
-              Order Status:{" "}
+            <p className="text-gray-400 font-medium mt-2 flex items-center gap-2">
+              Order Status:
               <span
-                className={`px-2 py-1 rounded-full text-s font-semibold ${
-                  order.status === "Order Placed"
-                    ? "bg-yellow-100 text-yellow-700"
-                    : order.status === "Out for Delivery"
-                    ? "bg-blue-100 text-blue-700"
-                    : order.status === "Delivered"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-gray-200 text-gray-600"
-                }`}
+                className={`px-2 py-1 rounded-full text-sm font-semibold border
+      ${
+        order.status === "Order Placed"
+          ? "bg-yellow-50 text-yellow-800 border-yellow-300"
+          : order.status === "Preparing"
+          ? "bg-orange-50 text-orange-700 border-orange-300"
+          : order.status === "Ready for Pickup"
+          ? "bg-sky-50 text-sky-800 border-sky-300"
+          : order.status === "Picked Up"
+          ? "bg-green-50 text-green-700 border-green-300"
+          : order.status === "Out for Delivery"
+          ? "bg-indigo-50 text-indigo-700 border-indigo-300"
+          : order.status === "Delivered"
+          ? "bg-emerald-50 text-emerald-700 border-emerald-300"
+          : order.status === "Cancelled"
+          ? "bg-rose-50 text-rose-700 border-rose-300"
+          : "bg-gray-100 text-gray-700 border-gray-300"
+      }`}
               >
                 {order.status}
               </span>
@@ -80,10 +89,7 @@ function MyOrders() {
                 </div>
               </div>
 
-              <div className="flex flex-col justify-center md:ml-8 mb-4 md:mb-0">
-                
-                
-              </div>
+              <div className="flex flex-col justify-center md:ml-8 mb-4 md:mb-0"></div>
               <p className="font-medium">
                 <p>Quantity: {item.quantity || "1"}</p>
                 Amount: {currency}
@@ -92,16 +98,15 @@ function MyOrders() {
             </div>
           ))}
 
-
           <p className="flex justify-between md:items-center text-gray-400 md:font-medium max-md:flex-col mt-5 gap-2">
-           <span className="text-primary text-lg font-semibold">
+            <span className="text-primary text-lg font-semibold">
               Order Mode :{" "}
               {order.orderMode === "room" ? "Room Delivery" : "Self Pickup"}
             </span>
 
             <span className="text-primary text-lg font-semibold">
               Payment :{" "}
-              {order.orderMode === "pickup" ? "On Counter" : order.paymentType}
+              {order.paymentType === "OC" ? "On Counter" : order.paymentType}
             </span>
 
             <span className="text-primary text-lg font-semibold">

@@ -44,7 +44,7 @@ export const placeOrderCOD = async (req, res) => {
       amount,
       address,
       orderMode,
-      paymentType: "COD",
+      paymentType: orderMode === "room" ? "COD" : "OC",
       isPaid: false,
     });
 
@@ -327,30 +327,67 @@ export const stripeWebhooks = async (request, response) => {
 // Get Orders by User ID : /api/order/user
 export const getUserOrders = async (req, res) => {
   try {
-    // const { userId } = req.body;
-    const userId = req.user.id; // FIXED HERE
-    const orders = await Order.find({
-      userId,
-      $or: [{ paymentType: "COD" }, { isPaid: true }],
-    })
+    const userId = req.user.id;
+    const orders = await Order.find({ userId })
       .populate("items.product address")
       .sort({ createdAt: -1 });
+
     return res.json({ success: true, orders });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
 };
 
+
 // Get All Orders ( for seller / admin ) : /api/order/seller
 export const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find({
-      $or: [{ paymentType: "COD" }, { isPaid: true }],
-    })
+    const orders = await Order.find({})
       .populate("items.product address")
       .sort({ createdAt: -1 });
+
     return res.json({ success: true, orders });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
 };
+
+
+
+// Update Order Status : /api/order/status/:orderId
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    order.status = status;
+    await order.save();
+
+    res.status(200).json({ message: "Order status updated", order });
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Update paid Status : /api/order/mark-paid/:orderId
+export const markOrderPaid = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.orderId);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    order.isPaid = true;
+    await order.save();
+
+    res.status(200).json({ success: true, message: "Order marked as paid" });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+

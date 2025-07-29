@@ -22,14 +22,74 @@ const Orders = () => {
     }
   };
 
-  const handleStatusUpdate = (orderId, newStatus) => {
-    console.log("Update status for:", orderId, "to:", newStatus);
-    // 🔜 Later: call your API endpoint to update status
+  const handleStatusChange = (orderId, newStatus) => {
+    setStatusMap((prev) => ({
+      ...prev,
+      [orderId]: newStatus,
+    }));
   };
 
-  const handleTogglePaid = (orderId) => {
-    console.log("Toggle paid for:", orderId);
-    // 🔜 Later: call your API to toggle isPaid
+  const handleOrderUpdate = async (orderId) => {
+    const updatedStatus = statusMap[orderId];
+    const updatedPaid = paidMap[orderId];
+
+    const order = orders.find((o) => o._id === orderId);
+    if (!order) return;
+
+    const isStatusChanged = updatedStatus && updatedStatus !== order.status;
+
+    const isPaidChanged = updatedPaid === "Yes" && order.isPaid === false;
+
+    if (!isStatusChanged && !isPaidChanged) {
+      return toast.error("No changes to update");
+    }
+
+    try {
+      if (isStatusChanged) {
+        await axios.put(`/api/order/status/${orderId}`, {
+          status: updatedStatus,
+        });
+        toast.success("Status updated successfully");
+      }
+
+      if (isPaidChanged) {
+        await axios.put(`/api/order/mark-paid/${orderId}`);
+        toast.success("Marked as paid");
+      }
+
+      fetchOrders(); // Refresh
+    } catch (error) {
+      toast.error("Failed to update order");
+      console.error(error);
+    }
+  };
+
+  const getNextStatusOptions = (order) => {
+    const current = order.status;
+    const mode = order.orderMode;
+
+    const options = [];
+
+    if (current === "Order Placed") {
+      if (mode === "pickup") {
+        options.push("Preparing", "Ready for Pickup", "Cancelled");
+      } else {
+        options.push("Preparing", "Out for Delivery", "Cancelled");
+      }
+      // options.push("Preparing", "Cancelled");
+    } else if (current === "Preparing") {
+      if (mode === "pickup") {
+        options.push("Ready for Pickup");
+      } else {
+        options.push("Out for Delivery");
+      }
+    } else if (current === "Ready for Pickup") {
+      options.push("Picked Up");
+    } else if (current === "Out for Delivery") {
+      options.push("Delivered");
+    }
+
+    return options;
   };
 
   useEffect(() => {
@@ -117,18 +177,27 @@ const Orders = () => {
                     Status
                   </label>
                   <select
-                    value={order.status}
+                    value={
+                      statusMap.hasOwnProperty(order._id)
+                        ? statusMap[order._id]
+                        : order.status
+                    }
                     onChange={(e) =>
                       handleStatusChange(order._id, e.target.value)
                     }
                     className="border border-gray-300 px-2 py-1 rounded text-sm"
                   >
-                    <option value="Order Placed">Order Placed</option>
-                    <option value="Ready for Pickup">Ready for Pickup</option>
-                    <option value="Out for Delivery">Out for Delivery</option>
-                    <option value="Delivered">Picked Up</option>
-                    <option value="Delivered">Delivered</option>
-                    <option value="Cancelled">Cancelled</option>
+                    {/* Show current status as disabled option */}
+                    <option value={order.status} disabled>
+                      {order.status}
+                    </option>
+
+                    {/* Show only allowed next statuses */}
+                    {getNextStatusOptions(order).map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -146,7 +215,7 @@ const Orders = () => {
                       }))
                     }
                     className="border border-gray-300 px-2 py-1 rounded text-sm"
-                    disabled={order.isPaid || paidMap[order._id] === "Yes"} // Disable if already paid
+                    disabled={order.isPaid} // ✅ Only disable if it's marked paid in backend
                   >
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
@@ -157,7 +226,7 @@ const Orders = () => {
               {/* Update Button */}
               <div className="flex justify-end">
                 <button
-                  onClick={() => handleStatusUpdate(order._id, updatedStatus)}
+                  onClick={() => handleOrderUpdate(order._id)}
                   className="text-white bg-primary hover:bg-primary-dull px-4 py-2 rounded text-sm transition"
                 >
                   Update

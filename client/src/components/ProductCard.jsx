@@ -15,15 +15,16 @@ const ProductCard = ({ product }) => {
           );
           scrollTo(0, 0);
         }}
-        className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white min-w-56 max-w-56 w-full"
+        className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white max-w-54"
       >
-        <div className="group cursor-pointer flex items-center justify-center px-2">
+        <div className="group cursor-pointer flex items-center justify-center py-2 w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40">
           <img
-            className="group-hover:scale-105 transition max-w-26 md:max-w-36 md:max-w-36 max-h-32"
+            className="group-hover:scale-105 transition-transform duration-300 object-contain w-full h-full"
             src={product.image[0]}
             alt={product.name}
           />
         </div>
+
         <div className="text-gray-500/60 text-sm">
           <p>{product.category}</p>
           <p className="text-gray-700 font-medium text-lg truncate w-full">
@@ -44,7 +45,8 @@ const ProductCard = ({ product }) => {
           </div>
           <div className="flex items-end justify-between mt-3">
             <p className="md:text-xl text-base font-medium text-primary">
-              {currency}{product.price}{" "}
+              {currency}
+              {product.price}{" "}
               {/* <span className="text-gray-500/60 md:text-sm text-xs line-through">
                 {currency}{product.price}
               </span> */}
