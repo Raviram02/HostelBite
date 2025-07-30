@@ -101,10 +101,6 @@ export const placeOrderRazorpay = async (req, res) => {
     const finalAmount = amount * 100;
 
     // Create internal order
-
-    console.log("Creating Razorpay Order with amount:", finalAmount);
-    console.log("UserId:", userId);
-
     const order = await Order.create({
       userId,
       items,

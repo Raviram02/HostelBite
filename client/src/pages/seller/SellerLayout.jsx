@@ -1,11 +1,11 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { assets } from "../../assets/assets";
-import { useAppContext } from "../../context/AppContext";
+import { AppContext, useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import Logo from "../../components/Logo";
 
 const SellerLayout = () => {
-  const { axios, navigate } = useAppContext();
+  const { axios, navigate, setIsSeller } = useAppContext(AppContext);
 
   const sidebarLinks = [
     { name: "Add Product", path: "/seller", icon: assets.add_icon },
@@ -23,6 +23,7 @@ const SellerLayout = () => {
       if (data.success) {
         toast.success(data.message);
         navigate("/");
+        setIsSeller(false);
       } else {
         toast.error(data.message);
       }
