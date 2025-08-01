@@ -74,7 +74,7 @@ export const login = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
-    
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -117,7 +117,9 @@ export const logout = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      path: "/", // ✅ Required to match the cookie path set earlier
     });
+
     return res.json({
       success: true,
       message: "Logged out",
