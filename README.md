@@ -8,6 +8,7 @@
 
 - Student login and signup
 - Add items to cart and place orders
+- Self pickup and room delivery options
 - Online payments with Razorpay 
 - Order tracking and history
 - Admin panel to manage orders
