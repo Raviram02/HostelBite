@@ -71,6 +71,9 @@ import brown_rice_image from "./brown_rice_image.png";
 import barley_image from "./barley_image.png";
 import snacks_image from "./snacks_image.png";
 import ice_cream_image from "./ice_cream_image.png";
+import Cakes_and_Bakery from "./Cakes_and_Bakery.png";
+import Hot_Beverages from "./Hot_Beverages.png";
+import Instant_Snacks from "./Instant_Snacks.png";
 
 export const assets = {
   logo,
@@ -122,21 +125,21 @@ export const categories = [
     bgColor: "#F0F5DE",
   },
   {
-    text: "Instant Food",
+    text: "Instant Snacks",
     path: "Instant",
-    image: maggi_image,
+    image: Instant_Snacks,
     bgColor: "#E1F5EC",
   },
   {
-    text: "Dairy Products",
+    text: "Hot Beverages",
     path: "Dairy",
-    image: dairy_product_image,
+    image: Hot_Beverages,
     bgColor: "#FEE6CD",
   },
   {
-    text: "Bakery & Breads",
+    text: "Bakery and Cakes",
     path: "Bakery",
-    image: bakery_image,
+    image: Cakes_and_Bakery,
     bgColor: "#E0F6FE",
   },
   // {
