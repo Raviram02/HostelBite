@@ -39,15 +39,20 @@ export const sellerLogin = async (req, res) => {
 };
 
 // Seller isAuth : /api/seller/is-auth
+// Seller isAuth : /api/seller/is-auth
 export const isSellerAuth = async (req, res) => {
-  try { 
-    return res.json({ success: true});
+  try {
+    const token = req.cookies.sellerToken;
+
+    if (!token) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    return res.json({ success: true });
   } catch (error) {
-    console.log(error.message);
-    res.json({
-      success: false,
-      message: error.message,
-    });
+    return res.status(401).json({ success: false, message: "Unauthorized" });
   }
 };
 
