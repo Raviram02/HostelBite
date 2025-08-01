@@ -1,17 +1,16 @@
 # 🍽️ HostelBite
 
-**HostelBite** is a food ordering web application built for hostel students. It allows students to order food from the canteen directly to their rooms. The goal is to reduce crowding, especially during exams, by making food delivery simple and convenient.
+**HostelBite** is a snacks ordering web application built for hostel students. It allows students to order snacks from the canteen directly to their rooms. The goal is to reduce crowding, especially during exams, by making snacks delivery simple and convenient.
 
 ---
 
 ## 🔑 Features
 
-- Student login and registration
-- View daily canteen menu
+- Student login and signup
 - Add items to cart and place orders
-- Online payments with Razorpay (UPI)
+- Online payments with Razorpay 
 - Order tracking and history
-- Admin panel to manage menu and orders
+- Admin panel to manage orders
 
 ---
 
