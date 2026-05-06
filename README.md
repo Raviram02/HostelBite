@@ -1,7 +1,6 @@
 # 🍽️ HostelBite
 
-**HostelBite** is a snacks ordering web application built for hostel students. It allows students to order snacks from the canteen directly to their rooms. The goal is to reduce crowding, especially during exams, by making snacks delivery simple and convenient.
-
+**HostelBite** is a Hostel Canteen Management System built for hostel students. It allows hostel students to order snacks from their hostel canteen directly to their rooms. The system brings convenience, saves time, and improves the overall food ordering experience for hostel students. With features like order tracking, order history, and an admin panel for management, HostelBite ensures smooth operation for both users and administrators. Overall, the project demonstrates how a full-stack web application can effectively solve real-life problems within a campus environment.
 ---
 
 ## 🔑 Features
